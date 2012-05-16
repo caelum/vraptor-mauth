@@ -1,6 +1,5 @@
 package br.com.caelum.vraptor.mauth;
 
-import br.com.caelum.vraptor.mauth.facebook.FacebookProfile;
 
 
 /**
@@ -17,13 +16,13 @@ public interface SystemUserCreator<T extends SystemUser> {
 	 * @param profile
 	 * @return
 	 */
-	T create(FacebookProfile profile);
+	T create(String profile);
 
 	/**
 	 * Connects this user to this facebook profile updating its data.
 	 * @param user
 	 * @param profile
 	 */
-	void connect(T user, FacebookProfile profile);
+	void connect(T user, String profile);
 
 }
