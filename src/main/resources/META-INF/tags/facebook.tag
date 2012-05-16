@@ -17,13 +17,35 @@
    }(document));
 </script>
 <script>
+JSON.stringify = JSON.stringify || function (obj) {
+    var t = typeof (obj);
+    if (t != "object" || obj === null) {
+        // simple data type
+        if (t == "string") obj = '"'+obj+'"';
+        return String(obj);
+    }
+    else {
+        // recurse array or object
+        var n, v, json = [], arr = (obj && obj.constructor == Array);
+        for (n in obj) {
+            v = obj[n]; t = typeof(v);
+            if (t == "string") v = '"'+v+'"';
+            else if (t == "object" && v !== null) v = JSON.stringify(v);
+            json.push((arr ? "" : '"' + n + '":') + String(v));
+        }
+        return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
+    }
+};
 function MauthFacebook(cb) {
 	 FB.login(function(response) {
 		   if (response.authResponse) {
-		     FB.api('/me', cb);
+		     FB.api('/me', function(x) {
+		    	 	cb(JSON.stringify(x));
+		     });
 		   } else {
 		     console.log('User cancelled login or did not fully authorize.');
 		   }
-		 }, {scope: "user_education_history,offline_access,user_likes,user_location,user_hometown,user_website,publish_stream"});
+		 }, {scope: "user_education_history,offline_access,user_likes,user_location,user_hometown,user_website,publish_stream"}
+	);
 }
 </script>
