@@ -36,6 +36,10 @@ public class AuthUserRepository {
 	public SystemUser load(final SystemUser toLoad) {
 		final SystemUser found = (SystemUser) session.get(config.getUserType(),
 				toLoad.getId());
+		return setupAfterLoad(found);
+	}
+
+	private SystemUser setupAfterLoad(final SystemUser found) {
 		if (found != null) {
 			tx.execute(new Runnable() {
 				public void run() {
@@ -83,6 +87,10 @@ public class AuthUserRepository {
 
 	private String getName() {
 		return config.getUserType().getName();
+	}
+
+	public SystemUser load(Long id) {
+		return setupAfterLoad((SystemUser) session.load(config.getUserType(), id));
 	}
 
 }

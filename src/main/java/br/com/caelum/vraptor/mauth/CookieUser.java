@@ -65,8 +65,8 @@ public class CookieUser<T extends SystemUser> {
 		return Arrays.asList(request.getCookies());
 	}
 
-	public void login(T toLoad) {
-		T user = (T) users.load(toLoad);
+	public void login(Long id) {
+		T user = (T) users.load(id);
 		
 		if (user == null)
 			return;

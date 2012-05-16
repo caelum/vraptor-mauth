@@ -1,5 +1,7 @@
 package br.com.caelum.vraptor.mauth.facebook;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 
 import br.com.caelum.vraptor.Post;
@@ -19,10 +21,13 @@ public class FacebookLoginController {
 
 	private final Facebook facebook;
 
+	private final HttpServletRequest request;
+
 	public FacebookLoginController(Transaction transaction,
-			Facebook facebook) {
+			Facebook facebook, HttpServletRequest request) {
 		this.transaction = transaction;
 		this.facebook = facebook;
+		this.request = request;
 	}
 
 	@Post("/auth/facebook")
