@@ -9,7 +9,7 @@ public class FacebookTest {
 	@Test
 	public void shouldExtractHisEmail() {
 		String email = Facebook
-				.extractEmail("profile : { email : \"guilherme.silveira@caelum.com.br\" }");
+				.extractEmail("profile : { \"email\" : \"guilherme.silveira@caelum.com.br\" }");
 		assertEquals("guilherme.silveira@caelum.com.br", email);
 	}
 

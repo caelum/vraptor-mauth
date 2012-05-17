@@ -36,7 +36,8 @@ public class FacebookLoginController {
 		final SystemUser user = facebook.connectedOrFindUserFor(profile);
 		transaction.execute(new Runnable() {
 			public void run() {
-				facebook.createOrConnectUser(profile, user);
+				SystemUser toLogin = facebook.createOrConnectUser(profile, user);
+				login.login(toLogin);
 			}
 		});
 

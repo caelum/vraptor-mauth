@@ -33,7 +33,7 @@ class Facebook {
 		return possible.getOrNull();
 	}
 
-	private static final Pattern EMAIL = Pattern.compile(".*email\\s*:\\s*\\\"([^\\\"]*)\\\".*");
+	private static final Pattern EMAIL = Pattern.compile(".*\"email\"\\s*:\\s*\\\"([^\\\"]*)\\\".*");
 	static String extractEmail(String profile) {
 		Matcher matcher = EMAIL.matcher(profile);
 		matcher.matches();
