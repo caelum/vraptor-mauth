@@ -1,5 +1,7 @@
 package br.com.caelum.vraptor.mauth;
 
+import java.util.concurrent.Callable;
+
 import org.hibernate.Session;
 
 import br.com.caelum.vraptor.ioc.Component;
@@ -26,6 +28,27 @@ public class Transaction {
 					tx.rollback();
 				}
 			}
+		}
+	}
+
+	public <T> T execute(Callable<T> code) {
+		try {
+			if (session.getTransaction().isActive()) {
+				return code.call();
+			} else {
+				org.hibernate.Transaction tx = session.beginTransaction();
+				try {
+					T result = code.call();
+					tx.commit();
+					return result;
+				} finally {
+					if (tx.isActive()) {
+						tx.rollback();
+					}
+				}
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 }
