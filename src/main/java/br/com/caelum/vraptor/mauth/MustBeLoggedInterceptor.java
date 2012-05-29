@@ -45,6 +45,7 @@ public class MustBeLoggedInterceptor implements Interceptor {
 			Object instance) throws InterceptionException {
 
 		if (user.isSignedIn()) {
+			request.setAttribute("currentUser", user.get());
 			stack.next(method, instance);
 		} else if (isAjaxRequest()) {
 			result.use(Results.http()).sendError(
