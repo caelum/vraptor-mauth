@@ -1,5 +1,7 @@
 package br.com.caelum.vraptor.mauth;
 
+import static br.com.caelum.vraptor.view.Results.http;
+import static br.com.caelum.vraptor.view.Results.page;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
@@ -30,7 +32,7 @@ public class LoginController {
 			validator.add(new I18nMessage("vraptor.mauth.signin.fail",
 					"vraptor.mauth.signin.fail"));
 			result.include("email", email);
-			validator.onErrorUse(PageResult.class).redirectTo(null);
+			validator.onErrorUse(page()).redirectTo("/");
 		}
 
 		if (urlAfterLogin == null) {
