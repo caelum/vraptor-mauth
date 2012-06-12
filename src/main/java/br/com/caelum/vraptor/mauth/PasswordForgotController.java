@@ -15,15 +15,13 @@ import br.com.caelum.vraptor.view.PageResult;
 public class PasswordForgotController {
 	private final AuthUserRepository users;
 	private final Result result;
-	private final Transaction tx;
 	private final Validator validator;
 	private final TemplateMailer mailer;
 
 	PasswordForgotController(Result result, AuthUserRepository users,
-			Transaction tx, Validator validator, TemplateMailer mailer) {
+			Validator validator, TemplateMailer mailer) {
 		this.result = result;
 		this.users = users;
-		this.tx = tx;
 		this.validator = validator;
 		this.mailer = mailer;
 	}
@@ -40,23 +38,15 @@ public class PasswordForgotController {
 		String token = u.getPassword().generateEncryptedRecoveryText(
 				u.getEmail());
 		mailer.template("mail.passwordForgot").with("token", token)
-			.dispatchTo(u.getName(),u.getEmail());
+				.dispatchTo(u.getName(), u.getEmail());
 
 		result.include("error", "vraptor.forgot.password.email.sent");
 		result.redirectTo("/");
 	}
 
-	@Get("/resetPassword/{token}")
+	@Get("/auth/resetPassword/{token}")
 	public void resetPassword(String token) {
-		final Option<SystemUser> user = findUserByToken(token);
-
-		tx.execute(new Runnable() {
-			public void run() {
-				SystemUser found = user.get();
-				found.getPassword().generateEncryptedRecoveryText(
-						found.getEmail());
-			}
-		});
+		Option<SystemUser> user = findUserByToken(token);
 
 		String recoveryToken = null;
 		if (user.isDefined()) {
@@ -68,7 +58,7 @@ public class PasswordForgotController {
 	}
 
 	private Option<SystemUser> findUserByToken(String token) {
-		final Option<SystemUser> user = users.findForEncryptedURL(token);
+		Option<SystemUser> user = users.findForEncryptedURL(token);
 
 		if (!user.isDefined()) {
 			validator.add(new I18nMessage(
@@ -79,13 +69,15 @@ public class PasswordForgotController {
 		return user;
 	}
 
-	@Post("/reassignPassword")
+	@Post("/auth/reassignPassword")
 	public void reassignPassword(String newPassword, String token) {
 		Option<SystemUser> search = findUserByToken(token);
 		SystemUser user = search.get();
 		user.getPassword().changeTo(newPassword);
 		user.getPassword().generateEncryptedRecoveryText(user.getEmail());
 		users.update(user);
+		
+		result.include("error", "vraptor.password_changed");
 
 		result.redirectTo("/");
 	}
