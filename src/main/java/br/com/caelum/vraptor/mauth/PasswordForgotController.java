@@ -17,13 +17,15 @@ public class PasswordForgotController {
 	private final Result result;
 	private final Validator validator;
 	private final TemplateMailer mailer;
+	private final Authenticator auth;
 
 	PasswordForgotController(Result result, AuthUserRepository users,
-			Validator validator, TemplateMailer mailer) {
+			Validator validator, TemplateMailer mailer, Authenticator auth) {
 		this.result = result;
 		this.users = users;
 		this.validator = validator;
 		this.mailer = mailer;
+		this.auth = auth;
 	}
 
 	@Post("/auth/accountRecovery")
