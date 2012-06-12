@@ -25,7 +25,7 @@ public class PasswordForgotController {
 		this.validator = validator;
 	}
 
-	@Post("/accountRecovery")
+	@Post("/auth/accountRecovery")
 	public void forgotPassword(String email) {
 		Option<SystemUser> userLoaded = users.findByEmail(email);
 		if (userLoaded.isEmpty()) {
@@ -41,7 +41,7 @@ public class PasswordForgotController {
 		// .with("link_to_recovery", linker.get())
 		// .dispatchTo(u);
 
-		result.include("error", "gnarus.forgot.password.email.sent");
+		result.include("error", "vraptor.forgot.password.email.sent");
 		result.redirectTo("/");
 	}
 
