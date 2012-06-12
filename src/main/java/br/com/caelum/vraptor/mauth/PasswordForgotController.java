@@ -6,6 +6,7 @@ import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
+import br.com.caelum.vraptor.simplemail.template.TemplateMailer;
 import br.com.caelum.vraptor.validator.I18nMessage;
 import br.com.caelum.vraptor.view.PageResult;
 
@@ -16,13 +17,15 @@ public class PasswordForgotController {
 	private final Result result;
 	private final Transaction tx;
 	private final Validator validator;
+	private final TemplateMailer mailer;
 
 	PasswordForgotController(Result result, AuthUserRepository users,
-			Transaction tx, Validator validator) {
+			Transaction tx, Validator validator, TemplateMailer mailer) {
 		this.result = result;
 		this.users = users;
 		this.tx = tx;
 		this.validator = validator;
+		this.mailer = mailer;
 	}
 
 	@Post("/auth/accountRecovery")
@@ -36,10 +39,8 @@ public class PasswordForgotController {
 		SystemUser u = userLoaded.get();
 		String token = u.getPassword().generateEncryptedRecoveryText(
 				u.getEmail());
-		// linker.linkTo(this).resetPassword(token);
-		// mailer.template("PASSWORD_FORGOT")
-		// .with("link_to_recovery", linker.get())
-		// .dispatchTo(u);
+		mailer.template("mail.passwordForgot").with("token", token)
+			.dispatchTo(u.getName(),u.getEmail());
 
 		result.include("error", "vraptor.forgot.password.email.sent");
 		result.redirectTo("/");
