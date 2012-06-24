@@ -78,6 +78,7 @@ public class PasswordForgotController {
 		user.getPassword().changeTo(newPassword);
 		user.getPassword().generateEncryptedRecoveryText(user.getEmail());
 		users.update(user);
+		auth.authenticate(user);
 		
 		result.include("error", "vraptor.password_changed");
 

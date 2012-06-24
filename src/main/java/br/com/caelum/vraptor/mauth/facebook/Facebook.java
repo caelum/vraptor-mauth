@@ -11,7 +11,7 @@ import br.com.caelum.vraptor.mauth.SystemUser;
 import br.com.caelum.vraptor.mauth.SystemUserCreator;
 
 @Component
-@SuppressWarnings({"rawtypes","unchecked"})
+@SuppressWarnings({ "rawtypes", "unchecked" })
 class Facebook {
 
 	private final PossibleUser possibleUser;
@@ -33,19 +33,21 @@ class Facebook {
 		return possible.getOrNull();
 	}
 
-	private static final Pattern EMAIL = Pattern.compile(".*\"email\"\\s*:\\s*\\\"([^\\\"]*)\\\".*");
+	private static final Pattern EMAIL = Pattern
+			.compile(".*\"email\"\\s*:\\s*\\\"([^\\\"]*)\\\".*");
+
 	static String extractEmail(String profile) {
 		Matcher matcher = EMAIL.matcher(profile);
 		matcher.matches();
 		return matcher.group(1);
 	}
 
-	public void createOrConnectUser(String profile, SystemUser user) {
+	public SystemUser createOrConnectUser(String profile, SystemUser user) {
 		if (user == null) {
-			creator.create(profile);
-		} else {
-			creator.connect(user, profile);
+			return creator.create(profile);
 		}
+		creator.connect(user, profile);
+		return user;
 	}
 
 }
