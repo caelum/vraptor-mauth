@@ -4,7 +4,6 @@ import static br.com.caelum.vraptor.view.Results.http;
 import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import br.com.caelum.vraptor.InterceptionException;
 import br.com.caelum.vraptor.Intercepts;
@@ -13,7 +12,6 @@ import br.com.caelum.vraptor.core.InterceptorStack;
 import br.com.caelum.vraptor.interceptor.InstantiateInterceptor;
 import br.com.caelum.vraptor.interceptor.Interceptor;
 import br.com.caelum.vraptor.resource.ResourceMethod;
-import br.com.caelum.vraptor.view.Results;
 
 @Intercepts(before = InstantiateInterceptor.class)
 public class MustBeLoggedInterceptor implements Interceptor {
