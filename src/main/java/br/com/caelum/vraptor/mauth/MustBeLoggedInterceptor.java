@@ -1,5 +1,8 @@
 package br.com.caelum.vraptor.mauth;
 
+import static br.com.caelum.vraptor.view.Results.http;
+import static javax.servlet.http.HttpServletResponse.SC_UNAUTHORIZED;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -48,10 +51,9 @@ public class MustBeLoggedInterceptor implements Interceptor {
 			request.setAttribute("currentUser", user.get());
 			stack.next(method, instance);
 		} else if (isAjaxRequest()) {
-			result.use(Results.http()).sendError(
-					HttpServletResponse.SC_UNAUTHORIZED);
+			result.use(http()).sendError(SC_UNAUTHORIZED);
 		} else {
-			result.forwardTo("/?urlAfterLogin=" + getReferer());
+			result.redirectTo("/?urlAfterLogin=" + getReferer());
 		}
 	}
 

@@ -1,6 +1,5 @@
 package br.com.caelum.vraptor.mauth;
 
-import static br.com.caelum.vraptor.view.Results.http;
 import static br.com.caelum.vraptor.view.Results.page;
 import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
@@ -9,10 +8,10 @@ import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.validator.I18nMessage;
-import br.com.caelum.vraptor.view.PageResult;
 
 @Resource
 @Open
+@SuppressWarnings("rawtypes")
 public class LoginController {
 	private final Authenticator authenticator;
 	private final Result result;
@@ -27,8 +26,8 @@ public class LoginController {
 
 	@Post("/signin")
 	public void signin(String email, String password, String urlAfterLogin) {
-		boolean authenticated_ = authenticator.authenticate(email, password);
-		if (!authenticated_) {
+		boolean isAuthenticated = authenticator.authenticate(email, password);
+		if (!isAuthenticated) {
 			validator.add(new I18nMessage("vraptor.mauth.signin.fail",
 					"vraptor.mauth.signin.fail"));
 			result.include("email", email);
