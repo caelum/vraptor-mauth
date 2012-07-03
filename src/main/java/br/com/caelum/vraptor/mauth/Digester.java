@@ -27,7 +27,7 @@ public class Digester {
 
 		long id = (Integer.parseInt(obfuscatedId, 16) - 1) / 37;
 
-		assert (hash == hashFor(id));
+		assert (hash.equals(hashFor(id)));
 
 		return id;
 	}
