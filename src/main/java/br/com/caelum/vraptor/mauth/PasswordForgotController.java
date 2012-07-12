@@ -12,6 +12,7 @@ import br.com.caelum.vraptor.view.PageResult;
 
 @Open
 @Resource
+@SuppressWarnings("rawtypes")
 public class PasswordForgotController {
 	private final AuthUserRepository users;
 	private final Result result;
