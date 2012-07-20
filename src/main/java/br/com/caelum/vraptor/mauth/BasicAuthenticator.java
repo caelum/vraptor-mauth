@@ -1,6 +1,5 @@
 package br.com.caelum.vraptor.mauth;
 
-import br.com.caelum.gnarus.auth.Access;
 import br.com.caelum.vraptor.environment.Environment;
 
 public abstract class BasicAuthenticator<T extends SystemUser> implements Authenticator<T> {
@@ -24,8 +23,8 @@ public abstract class BasicAuthenticator<T extends SystemUser> implements Authen
 		system.logout();
 	}
 
-	public void authenticate(User toLogin) {
-		system.login(toLogin.getId());
+	public void authenticate(SystemUser toLogin) {
+		system.login((Long) toLogin.getId());
 	}
 
 }
