@@ -2,7 +2,7 @@ package br.com.caelum.vraptor.mauth;
 
 public interface Authenticator<T extends SystemUser> {
 
-	public abstract boolean authenticate(String email, String password);
+	boolean authenticate(String email, String password);
 
 	public abstract void loginWithoutPasswordCheck(Long id);
 
