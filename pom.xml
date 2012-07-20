@@ -3,7 +3,7 @@
 
 	<groupId>br.com.caelum.vraptor</groupId>
 	<artifactId>vraptor-mauth</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.3-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>vraptor-mauth</name>
@@ -33,6 +33,8 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency ><groupId>org.mockito</groupId><artifactId>mockito-core</artifactId><version>1.8.5</version><scope>test</scope></dependency>
+		<dependency ><groupId>joda-time</groupId><artifactId>joda-time-hibernate</artifactId><version>1.3</version><scope>test</scope></dependency>
+		<dependency><groupId>hsqldb</groupId><artifactId>hsqldb</artifactId><version>1.8.0.10</version></dependency>
 		<dependency ><groupId>joda-time</groupId><artifactId>joda-time</artifactId><version>2.0</version><scope>compile</scope></dependency>
 		<dependency ><groupId>br.com.caelum.vraptor</groupId><artifactId>vraptor-simplemail</artifactId><version>1.1.2-SNAPSHOT</version><scope>compile</scope></dependency>
 		<dependency ><groupId>org.hibernate</groupId><artifactId>hibernate-core</artifactId><version>3.6.6.Final</version><scope>compile</scope></dependency>
