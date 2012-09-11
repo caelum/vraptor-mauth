@@ -65,7 +65,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>3.6.6.Final</version>
+			<version>3.6.10.Final</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -91,6 +91,11 @@
 			<artifactId>servlet-api</artifactId>
 			<version>3.0.20100224</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
 		</dependency>
 	</dependencies>
 	<build>
