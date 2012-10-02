@@ -48,7 +48,7 @@ public class LoginController {
 			result.use(Results.status()).notAcceptable();
 			return;
 		}
-		result.use(Results.status()).accepted()
+		result.use(Results.status()).accepted();
 	}
 
 	@Get
