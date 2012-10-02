@@ -40,6 +40,16 @@ public class LoginController {
 			result.redirectTo(urlAfterLogin);
 		}
 	}
+	
+	@Post("/easySigin")
+	public void signin(String email, String password) {
+		boolean isAuthenticated = authenticator.authenticate(email, password);
+		if (!isAuthenticated) {
+			result.use(Results.status()).notAcceptable();
+			return;
+		}
+		result.use(Results.status()).accepted()
+	}
 
 	@Get
 	public void signinHack(Long id) {
