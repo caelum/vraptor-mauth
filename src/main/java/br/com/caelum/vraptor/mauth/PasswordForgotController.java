@@ -5,10 +5,7 @@ import br.com.caelum.vraptor.Option;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
 import br.com.caelum.vraptor.Result;
-import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.simplemail.template.TemplateMailer;
-import br.com.caelum.vraptor.validator.I18nMessage;
-import br.com.caelum.vraptor.view.PageResult;
 
 @Open
 @Resource
@@ -16,15 +13,13 @@ import br.com.caelum.vraptor.view.PageResult;
 public class PasswordForgotController {
 	private final AuthUserRepository users;
 	private final Result result;
-	private final Validator validator;
 	private final TemplateMailer mailer;
 	private final Authenticator auth;
 
 	PasswordForgotController(Result result, AuthUserRepository users,
-			Validator validator, TemplateMailer mailer, Authenticator auth) {
+			TemplateMailer mailer, Authenticator auth) {
 		this.result = result;
 		this.users = users;
-		this.validator = validator;
 		this.mailer = mailer;
 		this.auth = auth;
 	}
@@ -49,32 +44,23 @@ public class PasswordForgotController {
 
 	@Get("/auth/resetPassword/{token}")
 	public void resetPassword(String token) {
-		Option<SystemUser> user = findUserByToken(token);
+		Option<SystemUser> user = users.findForEncryptedURL(token);
 
-		String recoveryToken = null;
-		if (user.isDefined()) {
-			recoveryToken = user.get().getPassword()
-					.getLastEncryptedRecoveryURL();
+		if (user.isEmpty()) {
+			result.include("error", "vraptor.forgot.password.invalid_token");
+			result.redirectTo("/");
+			return;
 		}
 
+		String recoveryToken = user.get().getPassword()
+				.getLastEncryptedRecoveryURL();
 		result.include("token", recoveryToken);
 	}
 
-	private Option<SystemUser> findUserByToken(String token) {
-		Option<SystemUser> user = users.findForEncryptedURL(token);
-
-		if (!user.isDefined()) {
-			validator.add(new I18nMessage(
-					"vraptor.mauth.forgotrequest.notfound",
-					"vraptor.mauth.forgotrequest.notfound"));
-			validator.onErrorUse(PageResult.class).forwardTo("/");
-		}
-		return user;
-	}
-
+	@SuppressWarnings("unchecked")
 	@Post("/auth/reassignPassword")
 	public void reassignPassword(String newPassword, String token) {
-		Option<SystemUser> search = findUserByToken(token);
+		Option<SystemUser> search = users.findForEncryptedURL(token);
 		SystemUser user = search.get();
 		user.getPassword().changeTo(newPassword);
 		user.getPassword().generateEncryptedRecoveryText(user.getEmail());

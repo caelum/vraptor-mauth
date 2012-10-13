@@ -18,32 +18,29 @@ import org.mockito.runners.MockitoJUnitRunner;
 import br.com.caelum.vraptor.Option;
 import br.com.caelum.vraptor.simplemail.template.MockTemplateMailer;
 import br.com.caelum.vraptor.util.test.MockResult;
-import br.com.caelum.vraptor.util.test.MockValidator;
 import br.com.caelum.vraptor.validator.ValidationException;
 import br.com.caelum.vraptor.view.HttpResult;
-
 
 @RunWith(MockitoJUnitRunner.class)
 public class PasswordForgotControllerSpec {
 
-	private @Mock
-	AuthUserRepository users;
+	@Mock
+	private AuthUserRepository users;
 	private MockResult result;
-	private MockValidator validator;
 	private PasswordForgotController controller;
 	@Mock
 	private HttpResult http;
 	private MockTemplateMailer mailer;
+	@SuppressWarnings("rawtypes")
 	@Mock
 	private Authenticator auth;
 
 	@Before
 	public void before() {
 		this.result = spy(new MockResult());
-		this.validator = spy(new MockValidator());
 		this.mailer = new MockTemplateMailer();
-		this.controller = new PasswordForgotController(result, users,
-				validator, mailer, this.auth);
+		this.controller = new PasswordForgotController(result, users, mailer,
+				this.auth);
 	}
 
 	@Test
@@ -87,7 +84,7 @@ public class PasswordForgotControllerSpec {
 				.thenReturn(some(user));
 
 		controller.reassignPassword("someNewPassword", newPasswordToken);
-		
+
 		verify(auth).authenticate(user);
 
 		assertEquals(Digester.encrypt("someNewPassword"), user.getPassword()
