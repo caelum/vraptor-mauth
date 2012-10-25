@@ -5,10 +5,10 @@ import br.com.caelum.vraptor.Get;
 import br.com.caelum.vraptor.Path;
 import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Resource;
-import br.com.caelum.vraptor.view.Results;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.Validator;
 import br.com.caelum.vraptor.validator.I18nMessage;
+import br.com.caelum.vraptor.view.Results;
 
 @Resource
 @Open
@@ -17,12 +17,14 @@ public class LoginController {
 	private final Authenticator authenticator;
 	private final Result result;
 	private final Validator validator;
+	private final URIVerifier uriVerifier;
 
 	public LoginController(Authenticator authenticator, Result result,
-			Validator validator) {
+			Validator validator, URIVerifier uriVerifier) {
 		this.authenticator = authenticator;
 		this.result = result;
 		this.validator = validator;
+		this.uriVerifier = uriVerifier;
 	}
 
 	@Post("/signin")
@@ -35,13 +37,13 @@ public class LoginController {
 			validator.onErrorUse(page()).redirectTo("/");
 		}
 
-		if (urlAfterLogin == null) {
+		if (urlAfterLogin == null || !uriVerifier.sameDomainAsMe(urlAfterLogin)) {
 			result.redirectTo("/dashboard");
 		} else {
 			result.redirectTo(urlAfterLogin);
 		}
 	}
-	
+
 	@Post("/easySigin")
 	public void signin(String email, String password) {
 		boolean isAuthenticated = authenticator.authenticate(email, password);
