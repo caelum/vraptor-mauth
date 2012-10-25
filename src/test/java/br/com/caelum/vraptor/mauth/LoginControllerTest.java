@@ -51,29 +51,25 @@ public class LoginControllerTest {
 
 	@Test
 	public void call_the_authenticator_with_the_user_and_redirect_to_the_last_url_requested() {
-		MockUser userToSignIn = new MockUser();
-		String password = "john";
 		String url = "/blabla";
 
-		when(authenticator.authenticate(userToSignIn.getEmail(),password)).thenReturn(true);
+		when(authenticator.authenticate(userToSignIn.getEmail(),userPassword)).thenReturn(true);
 		when(uriVerifier.sameDomainAsMe(url)).thenReturn(true);
-		controller.signin(userToSignIn.getEmail(), password, url);
+		controller.signin(userToSignIn.getEmail(), userPassword, url);
 
-		verify(authenticator).authenticate(userToSignIn.getEmail(), password);
+		verify(authenticator).authenticate(userToSignIn.getEmail(), userPassword);
 		verify(result).redirectTo(url);
 	}
 
 	@Test
 	public void call_the_authenticator_with_the_user_and_redirect_to_the_dashboard_if_requested_url_is_not_mine() {
-		MockUser userToSignIn = new MockUser();
-		String password = "john";
 		String url = "http://google.com";
 
-		when(authenticator.authenticate(userToSignIn.getEmail(),password)).thenReturn(true);
+		when(authenticator.authenticate(userToSignIn.getEmail(),userPassword)).thenReturn(true);
 		when(uriVerifier.sameDomainAsMe(url)).thenReturn(false);
-		controller.signin(userToSignIn.getEmail(), password, url);
+		controller.signin(userToSignIn.getEmail(), userPassword, url);
 
-		verify(authenticator).authenticate(userToSignIn.getEmail(), password);
+		verify(authenticator).authenticate(userToSignIn.getEmail(), userPassword);
 		verify(result).redirectTo(DASHBOARD);
 	}
 
@@ -82,5 +78,4 @@ public class LoginControllerTest {
 		controller.signout();
 		verify(authenticator).signout();
 	}
-
 }
