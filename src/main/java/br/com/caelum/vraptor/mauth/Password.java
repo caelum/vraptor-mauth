@@ -21,6 +21,7 @@ public class Password {
 	}
 
 	/** vraptor eyes only, remove if paranamer gets installed into sbt */
+	@Deprecated
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -48,6 +49,10 @@ public class Password {
 
 	public String getPassword() {
 		return this.password;
+	}
+
+	public boolean isDefined() {
+		return this.password != null;
 	}
 
 }

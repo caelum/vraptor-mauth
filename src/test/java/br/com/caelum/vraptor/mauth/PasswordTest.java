@@ -9,7 +9,7 @@ import org.junit.Test;
 public class PasswordTest {
 
 	@Test(expected = IllegalArgumentException.class)
-	public void should_complain_if_the_password_is_null_when_changing_it() {
+	public void shouldComplainIfThePasswordIsNullWhenChangingIt() {
 		new Password().changeTo(null);
 	}
 
@@ -52,4 +52,15 @@ public class PasswordTest {
 				"guilherme.silveira@caelum.com.br").equals(emptyText));
 	}
 
+	@Test
+	public void shouldNotBeDefinedIfRecentlyCreated() throws Exception {
+		assertFalse(new Password().isDefined());
+	}
+
+	@Test
+	public void shouldBeDefinedIfConfigured() throws Exception {
+		Password password = new Password();
+		password.changeTo("guilherme");
+		assertTrue(password.isDefined());
+	}
 }
