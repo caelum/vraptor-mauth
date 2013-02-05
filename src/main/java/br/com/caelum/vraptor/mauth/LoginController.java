@@ -28,14 +28,18 @@ public class LoginController {
 	}
 
 	@Post("/signin")
-	public void signin(String email, String password, String urlAfterLogin) {
+	public void signin(String email, String password, String urlAfterLogin, String uriOnError) {
 		boolean isAuthenticated = authenticator.authenticate(email, password);
 		if (!isAuthenticated) {
 			validator.add(new I18nMessage("vraptor.mauth.signin.fail",
 					"vraptor.mauth.signin.fail"));
 			result.include("email", email);
 			result.include("lastUrl", urlAfterLogin);
-			validator.onErrorUse(page()).redirectTo("/");
+			if(uriOnError == null || uriOnError.equals("") || !uriVerifier.sameDomainAsMe(uriOnError)) {
+				validator.onErrorUse(page()).redirectTo("/");
+			} else {
+				validator.onErrorUse(page()).redirectTo(uriOnError);
+			}
 		}
 
 		if (urlAfterLogin == null || !uriVerifier.sameDomainAsMe(urlAfterLogin)) {
