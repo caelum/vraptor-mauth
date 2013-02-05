@@ -43,7 +43,7 @@ public class LoginControllerTest {
 	public void call_the_authenticator_with_the_user() {
 		when(authenticator.authenticate(userToSignIn.getEmail(),userPassword)).thenReturn(true);
 
-		controller.signin(userToSignIn.getEmail(), userPassword, null);
+		controller.signin(userToSignIn.getEmail(), userPassword, null, null);
 
 		verify(authenticator).authenticate(userToSignIn.getEmail(), userPassword);
 		verify(result).redirectTo(DASHBOARD);
@@ -55,7 +55,7 @@ public class LoginControllerTest {
 
 		when(authenticator.authenticate(userToSignIn.getEmail(),userPassword)).thenReturn(true);
 		when(uriVerifier.sameDomainAsMe(url)).thenReturn(true);
-		controller.signin(userToSignIn.getEmail(), userPassword, url);
+		controller.signin(userToSignIn.getEmail(), userPassword, url, null);
 
 		verify(authenticator).authenticate(userToSignIn.getEmail(), userPassword);
 		verify(result).redirectTo(url);
@@ -67,7 +67,7 @@ public class LoginControllerTest {
 
 		when(authenticator.authenticate(userToSignIn.getEmail(),userPassword)).thenReturn(true);
 		when(uriVerifier.sameDomainAsMe(url)).thenReturn(false);
-		controller.signin(userToSignIn.getEmail(), userPassword, url);
+		controller.signin(userToSignIn.getEmail(), userPassword, url, null);
 
 		verify(authenticator).authenticate(userToSignIn.getEmail(), userPassword);
 		verify(result).redirectTo(DASHBOARD);
