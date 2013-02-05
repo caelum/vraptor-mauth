@@ -12,8 +12,7 @@ import br.com.caelum.vraptor.resource.ResourceMethod;
 @Intercepts
 public class LoggedUserInterceptor  implements Interceptor{
 
-
-	private PossibleUser user;
+	private final PossibleUser user;
 	private final HttpServletRequest request;
 	
 	public LoggedUserInterceptor(PossibleUser user, HttpServletRequest request) {

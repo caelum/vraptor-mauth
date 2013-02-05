@@ -34,6 +34,7 @@ public class LoginController {
 			validator.add(new I18nMessage("vraptor.mauth.signin.fail",
 					"vraptor.mauth.signin.fail"));
 			result.include("email", email);
+			result.include("lastUrl", urlAfterLogin);
 			validator.onErrorUse(page()).redirectTo("/");
 		}
 
