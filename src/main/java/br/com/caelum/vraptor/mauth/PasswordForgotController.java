@@ -57,8 +57,7 @@ public class PasswordForgotController {
 			return;
 		}
 
-		String recoveryToken = user.get().getPassword()
-				.getLastEncryptedRecoveryURL();
+		String recoveryToken = user.get().getPassword().getLastEncryptedRecoveryURL();
 		result.include("token", recoveryToken);
 	}
 
@@ -68,7 +67,6 @@ public class PasswordForgotController {
 		Option<SystemUser> search = users.findForEncryptedURL(token);
 		SystemUser user = search.get();
 		user.getPassword().changeTo(newPassword);
-		user.getPassword().generateEncryptedRecoveryText(user.getEmail());
 		users.update(user);
 		auth.authenticate(user);
 
